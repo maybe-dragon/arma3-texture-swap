@@ -9,7 +9,7 @@ F85_textureSwap_addCommunicationMenu = {
 
 	params [["_unit",objnull]];
 	
-	if (_unit isequalto objnull) exitWith {systemchat "You need to enter a player as parameter"};
+	if (_unit isequalto objnull) exitWith {systemchat "Texture Swap: You need to enter a player as parameter"};
 	
 	waitUntil {_unit isequalto _unit};
 	sleep 1;
@@ -24,14 +24,14 @@ F85_textureSwap_showVehicleSubMenu = {
 
 	_vehicle = vehicle _player;
  	if (_vehicle == _player) exitWith {
-	  systemChat 'Player is not in a vehicle';
+	  systemChat 'Texture Swap: You are not in a vehicle';
 	  false
 	};
 
 	_displayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "displayName");
 	_textureSources = "true" configClasses (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources");
 	if (count _textureSources == 0) exitWith {
-		systemChat "Vehicle does not have any texture sources";
+		systemChat "Texture Swap: Vehicle does not have any texture sources";
 		false
 	};
 	
@@ -62,7 +62,7 @@ F85_textureSwap_setTexture = {
 
 	_vehicle = vehicle _player;
 	if (_vehicle == _player) exitWith {
-	  systemChat 'Player is not in a vehicle';
+	  systemChat 'Texture Swap: Please stay in the vehicle';
 	  false
 	};
 	
@@ -70,7 +70,7 @@ F85_textureSwap_setTexture = {
 	_textureSources = "true" configClasses (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources");
 
 	if (count _textureSources == 0) exitWith {
-		systemChat "Vehicle does not have any texture sources!";
+		systemChat "Texture Swap: Vehicle does not have any texture sources. How did you get here?";
 		false
 	};
 	

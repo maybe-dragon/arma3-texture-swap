@@ -21,8 +21,8 @@ debriefing = 0;
 
 
 overviewPicture = "";
-overviewText = "Texture Swap";
-OnLoadName = "Texture Swap";
+overviewText = "Texture Swap Showcase";
+OnLoadName = "Texture Swap Showcase";
 author = "Fafnir";
 onLoadMission = "";
 OnLoadMissionTime = 1;
