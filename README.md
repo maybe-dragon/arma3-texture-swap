@@ -9,6 +9,10 @@ Inspired by [GOM_fnc_aircraftLoadout by Grumpy Old Man](https://www.armaholic.co
   - Really
   
 ## Usage
+
+The included showcase adds a support module to trigger the functionality, but that is not necessary. You could call `[player] call F85_textureSwap_showVehicleSubMenu` from any user interaction.
+
+However, currently the script expects the player to sit inside of the vehicle which he wants to change.
  
 - Copy the `scripts` folder
 - Add (or merge) the class configs from `description.ext` to your own
@@ -16,4 +20,5 @@ Inspired by [GOM_fnc_aircraftLoadout by Grumpy Old Man](https://www.armaholic.co
 
 ## Limitations
 
+- You have to sit inside a vehicle to change its textures (yes, very tragic)
 - Does not look very good for vehicles with more than 10 skins (eg. MH-900) (but it works just fine)
