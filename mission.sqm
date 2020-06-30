@@ -8,14 +8,14 @@ class EditorData
 	toggles=513;
 	class ItemIDProvider
 	{
-		nextID=14;
+		nextID=27;
 	};
 	class Camera
 	{
 		pos[]={1252.7592,27.185036,4359.1543};
-		dir[]={0.47464579,-0.66851401,-0.5726313};
-		up[]={0.42662984,0.74368757,-0.51470369};
-		aside[]={-0.76994526,8.7154331e-007,-0.63819486};
+		dir[]={0.020894742,-0.59146899,-0.80616426};
+		up[]={0.01532489,0.80626476,-0.59135926};
+		aside[]={-0.99975163,-8.2805855e-007,-0.025910581};
 	};
 };
 binarizationWanted=0;
@@ -34,13 +34,20 @@ addons[]=
 	"A3_Armor_F_EPC_MBT_01",
 	"A3_Static_F_Mortar_01",
 	"A3_Soft_F_Orange_Van_02",
-	"A3_Armor_F_Gamma_APC_Wheeled_03"
+	"A3_Armor_F_Gamma_APC_Wheeled_03",
+	"A3_Soft_F_Gamma_Hatchback_01",
+	"A3_Soft_F_Kart_Kart_01",
+	"A3_Soft_F_Gamma_SUV_01",
+	"A3_Air_F_Heli_Light_01",
+	"A3_Soft_F_Orange_Offroad_01",
+	"A3_Soft_F_Offroad_01",
+	"A3_Soft_F_Enoch_Offroad_01"
 };
 class AddonsMetaData
 {
 	class List
 	{
-		items=13;
+		items=16;
 		class Item0
 		{
 			className="A3_Air_F_Jets";
@@ -132,6 +139,27 @@ class AddonsMetaData
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
+		class Item13
+		{
+			className="A3_Soft_F_Kart";
+			name="Arma 3 Karts - Unarmored Land Vehicles";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item14
+		{
+			className="A3_Air_F";
+			name="Arma 3 Alpha - Aircraft";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item15
+		{
+			className="A3_Soft_F_Enoch";
+			name="Arma 3 Enoch - Unarmored Land Vehicles";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
 	};
 };
 randomSeed=10598760;
@@ -160,7 +188,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=13;
+		items=21;
 		class Item0
 		{
 			dataType="Object";
@@ -181,7 +209,7 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={1273.7451,7.3704405,4340.3286};
+				position[]={1274.5786,7.3704405,4355.0845};
 			};
 			side="Empty";
 			flags=4;
@@ -196,10 +224,10 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={1274.7368,7.7734213,4356.833};
+				position[]={1274.1027,7.7734213,4339.9556};
 			};
-			side="Empty";
-			flags=4;
+			side="West";
+			flags=6;
 			class Attributes
 			{
 				reportRemoteTargets=1;
@@ -230,22 +258,142 @@ class Mission
 			side="West";
 			class Entities
 			{
-				items=1;
+				items=3;
 				class Item0
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={1263.7957,5.0014391,4336.3076};
+						position[]={1274.1027,5.0014391,4340.0054};
 					};
 					side="West";
 					flags=7;
 					class Attributes
 					{
-						isPlayer=1;
+						isPlayable=1;
 					};
 					id=5;
 					type="B_Soldier_A_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={1232.395,5.0014391,4324.6997};
+					};
+					side="West";
+					flags=5;
+					class Attributes
+					{
+						skill=0.44999999;
+						rank="CORPORAL";
+						isPlayable=1;
+					};
+					id=26;
+					type="B_Soldier_GL_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="speaker";
+							expression="_this setspeaker _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Male10ENG";
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1.02;
+								};
+							};
+						};
+						nAttributes=2;
+					};
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={1232.136,5.0014391,4321.0776};
+					};
+					side="West";
+					flags=5;
+					class Attributes
+					{
+						skill=0.40000001;
+						isPlayer=1;
+						isPlayable=1;
+					};
+					id=24;
+					type="B_Soldier_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="speaker";
+							expression="_this setspeaker _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Male07ENG";
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=0.97000003;
+								};
+							};
+						};
+						nAttributes=2;
+					};
 				};
 			};
 			class Attributes
@@ -264,7 +412,7 @@ class Mission
 					{
 						linkID=0;
 						item0=5;
-						item1=8;
+						item1=2;
 						class CustomData
 						{
 							role=1;
@@ -294,7 +442,7 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={1270.7853,6.8319178,4321.7285};
+				position[]={1271.0953,6.8319178,4319.5781};
 			};
 			side="Empty";
 			flags=4;
@@ -311,8 +459,8 @@ class Mission
 			{
 				position[]={1263.7957,6.9147005,4336.2578};
 			};
-			side="West";
-			flags=6;
+			side="Empty";
+			flags=4;
 			class Attributes
 			{
 			};
@@ -339,7 +487,7 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={1259.4221,7.7264757,4316.9092};
+				position[]={1252.7676,7.7264757,4319.5708};
 			};
 			side="Empty";
 			flags=4;
@@ -384,7 +532,7 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={1248.6147,7.6142888,4322.4604};
+				position[]={1261.9155,7.6142888,4320.8677};
 			};
 			side="Empty";
 			flags=4;
@@ -393,6 +541,126 @@ class Mission
 			};
 			id=13;
 			type="I_APC_Wheeled_03_cannon_F";
+		};
+		class Item13
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1270.2991,6.4501238,4296.002};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=14;
+			type="C_Hatchback_01_F";
+		};
+		class Item14
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1275.2002,6.4501238,4293.8105};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=15;
+			type="C_Hatchback_01_sport_F";
+		};
+		class Item15
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1265.4928,6.0527129,4297.1436};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=16;
+			type="C_Kart_01_F";
+		};
+		class Item16
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1281.0361,6.5964622,4293.3271};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=17;
+			type="C_SUV_01_F";
+		};
+		class Item17
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1295.9449,5.6047058,4282.8882};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=18;
+			type="C_Heli_Light_01_civil_F";
+		};
+		class Item18
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1248.0336,6.6115026,4299.5195};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=19;
+			type="C_IDAP_Offroad_01_F";
+		};
+		class Item19
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1253.4268,6.6115026,4299.1553};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=20;
+			type="C_Offroad_01_F";
+		};
+		class Item20
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={1243.4814,6.7171087,4299.5542};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=21;
+			type="C_Offroad_01_comms_F";
 		};
 	};
 };
