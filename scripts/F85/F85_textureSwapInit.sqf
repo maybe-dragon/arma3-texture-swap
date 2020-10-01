@@ -6,14 +6,24 @@
 
 
 F85_textureSwap_addCommunicationMenu = {
+	params [["_unit", objnull]];
 
-	params [["_unit",objnull]];
-	
+	[_unit, ["F85_textureSwapCommunicationMenu"]] call F85_textureSwap_safeAddMenus;
+};
+
+F85_textureSwap_safeAddMenus = {
+	// I don't actually know whether all this is really necessary. But better safe than sorry. JIP problems?
+
+	params [["_unit", objnull], "_menus"];
+
 	if (_unit isequalto objnull) exitWith {systemchat "Texture Swap: You need to enter a player as parameter"};
-	
+
 	waitUntil {_unit isequalto _unit};
 	sleep 1;
-	_support = [_unit,"F85_textureSwapCommunicationMenu"] call BIS_fnc_addCommMenuItem;
+
+	{ 
+		[_unit, _x] call BIS_fnc_addCommMenuItem;
+	} forEach _menus;
 
 	true
 };
@@ -28,18 +38,19 @@ F85_textureSwap_showVehicleSubMenu = {
 	  false
 	};
 
-	_displayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "displayName");
+	_vehDisplayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "displayName");
 	_textureSources = "true" configClasses (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources");
 	if (count _textureSources == 0) exitWith {
-		systemChat "Texture Swap: Vehicle does not have any texture sources";
+		//  Vehicle does not have any texture sources
+		systemChat "Texture Swap: Cannot customize this vehicle";
 		false
 	};
-	
-	MENU_COMMS_1 = [ ["Select texture", false] ]; // Menu name, has input focus
+
+	MENU_COMMS_TEX_1 = [ ["Select texture", true] ]; // Menu name, has input focus
 	{
 		_textureName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources" >> configName _x >> "displayName");
-		
-		MENU_COMMS_1 pushBack [
+	
+		MENU_COMMS_TEX_1 pushBack [
 			_textureName, // title
 			[(2 + _forEachIndex)], // key
 			"", // Submenu_name
@@ -49,7 +60,12 @@ F85_textureSwap_showVehicleSubMenu = {
 			"1" // isActive
 		];
 	} foreach _textureSources;
-	
+
+	MENU_COMMS_1 = [
+		["Customize vehicle", true],
+		["Textures", [2], "#USER:MENU_COMMS_TEX_1", -5, [], "1", "1"],
+		["Animations", [3], "#USER:MENU_COMMS_ANIM_1", -5, [], "1", "1"]
+	];
 	showCommandingMenu "#USER:MENU_COMMS_1";
 
 	playSound "Click";
