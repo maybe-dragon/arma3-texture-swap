@@ -1,4 +1,4 @@
-/** 
+/**
  * Fafnir's dead-simple texture switching command module
  *
  * Inspired by GOM_fnc_aircraftLoadout V1.35 made by Grumpy Old Man 17-5-2017
@@ -21,7 +21,7 @@ F85_textureSwap_safeAddMenus = {
 	waitUntil {_unit isequalto _unit};
 	sleep 1;
 
-	{ 
+	{
 		[_unit, _x] call BIS_fnc_addCommMenuItem;
 	} forEach _menus;
 
@@ -62,7 +62,7 @@ F85_textureSwap_generateTextureMenu = {
 	_comm_menu = [ ["Select texture", true] ]; // Menu name, has input focus
 	{
 		_textureName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources" >> configName _x >> "displayName");
-	
+
 		_comm_menu pushBack [
 			_textureName, // title
 			[(2 + _forEachIndex)], // key
@@ -86,7 +86,7 @@ F85_textureSwap_setTexture = {
 	  systemChat 'Texture Swap: Please stay in the vehicle';
 	  false
 	};
-	
+
 	_displayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "displayName");
 	_textureSources = "true" configClasses (configfile >> "CfgVehicles" >> typeof _vehicle >> "TextureSources");
 
@@ -94,7 +94,7 @@ F85_textureSwap_setTexture = {
 		systemChat "Texture Swap: Vehicle does not have any texture sources. How did you get here?";
 		false
 	};
-	
+
 	_selectedSource = _textureSources select _sourceIndex;
 	_textures = getArray (configfile >> "CfgVehicles" >> typeof _vehicle >> "TextureSources" >> configName _selectedSource >> "textures");
 
@@ -163,5 +163,5 @@ F85_textureSwap_triggerAnimation = {
 		_vehicle animateSource [_animationName, 1, 1];
 	} else {
 		_vehicle animateSource [_animationName, 0, 1];
-	}; 
+	};
 };
