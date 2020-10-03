@@ -6,13 +6,13 @@
  * License: MIT
  */
 
-F85_textureSwap_addCommunicationMenu = {
+F85_TextureSwap_addCommunicationMenu = {
 	params [["_unit", objnull]];
 
-	[_unit, ["F85_textureSwapCommunicationMenu"]] call F85_textureSwap_safeAddMenus;
+	[_unit, ["F85_TextureSwapCommunicationMenu"]] call F85_TextureSwap_safeAddMenus;
 };
 
-F85_textureSwap_safeAddMenus = {
+F85_TextureSwap_safeAddMenus = {
 	// I don't actually know whether all this is really necessary. But better safe than sorry. JIP problems?
 
 	params [["_unit", objnull], "_menus"];
@@ -29,75 +29,109 @@ F85_textureSwap_safeAddMenus = {
 	true
 };
 
-F85_textureSwap_showVehicleSubMenu = {
+F85_TextureSwap_showVehicleSubMenu = {
 	params ["_player"];
 
-	_vehicle = vehicle _player;
+	private _vehicle = vehicle _player;
  	if (_vehicle == _player) exitWith {
 	  systemChat 'Texture Swap: You are not in a vehicle';
 	  false
 	};
 
-	_vehDisplayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "displayName");
+	private _vehDisplayName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "displayName");
 
 	createDialog "F85_TextureSwap_MainDialog";
-	_display = findDisplay 85000;
-	_textureList = _display displayCtrl 1500;
+	private _display = findDisplay 85000;
+	private _textureList = _display displayCtrl 1500;
+	private _animationList = _display displayCtrl 1501;
+
+	[_player, _textureList] call F85_TextureSwap_generateTextureList;
+	[_player, _animationList] call F85_TextureSwap_generateAnimationList;
+
 	_textureList ctrlAddEventHandler ["LBSelChanged",
 		format ["[%1, _this select 0, _this select 1] call F85_TextureSwap_setTextureFromControl;", _player]];
-	_animationList = _display displayCtrl 1501;
 	_animationList ctrlAddEventHandler ["LBSelChanged",
 		format ["[%1, _this select 0, _this select 1] call F85_TextureSwap_setAnimationFromControl", _player]];
-
-	[_player, _textureList] call F85_textureSwap_generateTextureList;
-	[_player, _animationList] call F85_textureSwap_generateAnimationList;
 
 	playSound "Click";
 	true
 };
 
-F85_textureSwap_generateTextureList = {
+F85_TextureSwap_generateTextureList = {
 	params ["_player", "_control"];
 
-	_vehicle = vehicle _player;
-	_textureSources = "true" configClasses (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources");
+	private _vehicle = vehicle _player;
+	private _textureSources = "true" configClasses (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources");
 
 	{
-		_textureName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "textureSources" >> configName _x >> "displayName");
+		private _configName = configName _x;
+		private _textureName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _configName >> "displayName");
 
-		_index = _control lbAdd _textureName;
+		private _index = _control lbAdd _textureName;
 		_control lbSetData [_index, configName _x];
-	} foreach _textureSources;
+
+		private _textures = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _configName >> "textures");
+		private _currentTextures = getObjectTextures _vehicle;
+		if ([_currentTextures, _textures] call F85_TextureSwap_areTexturesEqual) then {
+			_control lbSetCurSel _index;
+		};
+	} forEach _textureSources;
+};
+
+F85_TextureSwap_areTexturesEqual = {
+	params ["_a", "_b"];
+	if (count _a != count _b) exitWith {
+		false
+	};
+	private _result = true;
+	for "_i" from 0 to (count _a) - 1 do {
+		private _nA = (_a select _i) call F85_TextureSwap_normalizeTextureString;
+		private _nB = (_b select _i) call F85_TextureSwap_normalizeTextureString;
+		// Case insensitive string comparison
+		if (_nA != _nB) exitWith {
+			_result = false;
+		};
+	};
+	_result;
+};
+
+F85_TextureSwap_normalizeTextureString = {
+	// Some textures strings start with a "\"
+	params ["_tex"];
+	if (_tex select [0, 1] == "\") exitWith {
+		_tex select [1]
+	};
+	_tex
 };
 
 F85_TextureSwap_setTextureFromControl = {
 	params ["_player", "_control", "_selectedIndex"];
 
-	_textureName = _control lbData _selectedIndex;
-	[_player, _textureName] call F85_textureSwap_setTexture;
+	private _textureName = _control lbData _selectedIndex;
+	[_player, _textureName] call F85_TextureSwap_setTexture;
 };
 
-F85_textureSwap_setTexture = {
+F85_TextureSwap_setTexture = {
 	params ["_player", "_textureName"];
 
-	_vehicle = vehicle _player;
-	_textures = getArray (configfile >> "CfgVehicles" >> typeof _vehicle >> "TextureSources" >> _textureName >> "textures");
+	private _vehicle = vehicle _player;
+	private _textures = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _textureName >> "textures");
 
 	{
 		_vehicle setObjectTextureGlobal [_forEachIndex, _x];
-	} foreach _textures;
+	} forEach _textures;
 
 	playSound "Click";
 	true
 };
 
-F85_textureSwap_generateAnimationList = {
+F85_TextureSwap_generateAnimationList = {
 	params ["_player", "_control"];
 
-	_vehicle = vehicle _player;
-	_animationsList = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "animationList");
+	private _vehicle = vehicle _player;
+	private _animationsList = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "animationList");
 	// animationList contains animation names and their probabilities
-	_animationNames = [];
+	private _animationNames = [];
 	{
 		if (_x isEqualType "") then {
 			// _x is a string
@@ -106,30 +140,30 @@ F85_textureSwap_generateAnimationList = {
 	} forEach _animationsList;
 
 	{
-		_animationName = _x;
-		_displayName = getText (configfile >> "CfgVehicles" >> typeof _vehicle >> "AnimationSources" >> _animationName >> "displayName");
+		private _animationName = _x;
+		private _displayName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "AnimationSources" >> _animationName >> "displayName");
 		if (_displayName == "") then {
 			_displayName = _animationName;
 		};
 
-		_index = _control lbAdd _displayName;
+		private _index = _control lbAdd _displayName;
 		_control lbSetData [_index, _animationName];
-	} foreach _animationNames;
+	} forEach _animationNames;
 };
 
 F85_TextureSwap_setAnimationFromControl = {
 	params ["_player", "_control", "_selectedIndex"];
 
-	_animationName = _control lbData _selectedIndex;
-	[_player, _animationName] call F85_textureSwap_toggleAnimation;
+	private _animationName = _control lbData _selectedIndex;
+	[_player, _animationName] call F85_TextureSwap_toggleAnimation;
 };
 
-F85_textureSwap_toggleAnimation = {
+F85_TextureSwap_toggleAnimation = {
 	params ["_player", "_animationName"];
 
-	_vehicle = vehicle _player;
+	private _vehicle = vehicle _player;
 
-	_currentPhase = _vehicle animationSourcePhase _animationName;
+	private _currentPhase = _vehicle animationSourcePhase _animationName;
 	if (_currentPhase < 0.5) then {
 		_vehicle animateSource [_animationName, 1, 1];
 	} else {
