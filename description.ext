@@ -1,15 +1,14 @@
 class CfgFunctions
 {
-	#include "scripts\F85\F85_fnc_functions.hpp"
+	#include "F85_TextureSwap\F85_TextureSwap_functions.hpp"
 };
-
 
 class CfgCommunicationMenu
 {
-	#include "scripts\F85\F85_fnc_communicationMenu.hpp"
+	#include "F85_TextureSwap\F85_TextureSwap_CommunicationMenu.hpp"
 };
 
-#include "F85_TextureSwap\dialog_configs.hpp"
+#include "F85_TextureSwap\F85_TextureSwap_configs.hpp"
 
 /*
  * Remove everything below this line that you don't need

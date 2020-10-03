@@ -1,0 +1,1 @@
+#include "GUI\dialog_configs.hpp"

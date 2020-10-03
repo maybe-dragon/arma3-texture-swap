@@ -1,4 +1,4 @@
-#include "parent_configs.hpp"
+#include "dialog_parent_configs.hpp"
 
 // Grid Macros
 #define GUI_GRID_X	(0)

@@ -9,7 +9,7 @@
 F85_TextureSwap_addCommunicationMenu = {
 	params [["_unit", objnull]];
 
-	[_unit, ["F85_TextureSwapCommunicationMenu"]] call F85_TextureSwap_safeAddMenus;
+	[_unit, ["F85_TextureSwap_CommunicationMenu"]] call F85_TextureSwap_safeAddMenus;
 };
 
 F85_TextureSwap_safeAddMenus = {
