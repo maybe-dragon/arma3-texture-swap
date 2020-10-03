@@ -9,6 +9,8 @@ class CfgCommunicationMenu
 	#include "scripts\F85\F85_fnc_communicationMenu.hpp"
 };
 
+#include "F85_TextureSwap\dialog_configs.hpp"
+
 /*
  * Remove everything below this line that you don't need
  * This is just part of the demo mission and not needed
