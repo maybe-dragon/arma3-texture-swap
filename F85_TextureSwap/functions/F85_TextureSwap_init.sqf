@@ -147,20 +147,37 @@ F85_TextureSwap_generateAnimationList = {
 			_displayName = _animationName;
 		};
 
-		// TODO check boxes for animations?
 		private _index = _control lbAdd _displayName;
 		_control lbSetData [_index, _animationName];
+		// Set selection if animation is active
+		private _currentPhase = _vehicle animationSourcePhase _animationName;
+		if (_currentPhase > 0.5) then {
+			_control lbSetSelected [_index, true];
+		};
 	} forEach _animationNames;
 };
 
 F85_TextureSwap_setAnimationFromControl = {
 	params ["_control", "_selectedIndex"];
 
+	// Normally the listbox would unselect all entries on an unmodified click. But we
+	// want all previously selected items selected.
+	// We can't change the current selection inside this handler. Spawn a new function (async)
+	[_control, lbSelection _control, _selectedIndex] spawn F85_TextureSwap_addToSelection;
+
 	private _vehicle = player getVariable "F85_TextureSwap_targetVehicle";
 	private _animationName = _control lbData _selectedIndex;
 	[_vehicle, _animationName] call F85_TextureSwap_toggleAnimation;
 
 	playSound "Click";
+};
+
+F85_TextureSwap_addToSelection = {
+	// Select all rows in _selection, except for the current row
+	params ["_control", "_selection", "_current"];
+	{
+		_control lbSetSelected [_x, _x != _current];
+	} forEach _selection;
 };
 
 F85_TextureSwap_toggleAnimation = {
