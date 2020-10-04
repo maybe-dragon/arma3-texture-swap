@@ -29,56 +29,57 @@ F85_TextureSwap_safeAddMenus = {
 	true
 };
 
-F85_TextureSwap_showVehicleSubMenu = {
-	params ["_player"];
+F85_TextureSwap_showVehicleMenu = {
+	private _vehicle = vehicle player;
 
-	private _vehicle = vehicle _player;
- 	if (_vehicle == _player) exitWith {
-	  systemChat 'Texture Swap: You are not in a vehicle';
-	  false
+ 	if (_vehicle == player) exitWith {
+		hint "Texture Swap failed \nGet in the driver seat of a vehicle.";
+		false
 	};
 
-	private _vehDisplayName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "displayName");
+	// TODO: Add a configuration parameter to toggle this functionality
+	// if (not (driver _vehicle isEqualTo player)) exitWith {
+	// 	hint "Texture Swap failed \nGet in the driver seat first.";
+	// 	false
+	// };
 
 	createDialog "F85_TextureSwap_MainDialog";
 	private _display = findDisplay 85000;
 	private _textureList = _display displayCtrl 1500;
 	private _animationList = _display displayCtrl 1501;
 
-	[_player, _textureList] call F85_TextureSwap_generateTextureList;
-	[_player, _animationList] call F85_TextureSwap_generateAnimationList;
+	[_vehicle, _textureList] call F85_TextureSwap_generateTextureList;
+	[_vehicle, _animationList] call F85_TextureSwap_generateAnimationList;
 
-	_textureList ctrlAddEventHandler ["LBSelChanged",
-		format ["[%1, _this select 0, _this select 1] call F85_TextureSwap_setTextureFromControl;", _player]];
-	_animationList ctrlAddEventHandler ["LBSelChanged",
-		format ["[%1, _this select 0, _this select 1] call F85_TextureSwap_setAnimationFromControl", _player]];
+	player setVariable ["F85_TextureSwap_targetVehicle", _vehicle];
+	_textureList ctrlAddEventHandler ["LBSelChanged", F85_TextureSwap_setTextureFromControl];
+	_animationList ctrlAddEventHandler ["LBSelChanged", F85_TextureSwap_setAnimationFromControl];
 
 	playSound "Click";
 	true
 };
 
 F85_TextureSwap_generateTextureList = {
-	params ["_player", "_control"];
+	params ["_vehicle", "_control"];
 
-	private _vehicle = vehicle _player;
-	private _textureSources = "true" configClasses (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources");
-
+	private _textureSources = configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources";
 	{
-		private _configName = configName _x;
-		private _textureName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _configName >> "displayName");
+		private _textureSource = _textureSources >> configName _x;
+		private _textureDisplayName = getText (_textureSource >> "displayName");
 
-		private _index = _control lbAdd _textureName;
+		private _index = _control lbAdd _textureDisplayName;
 		_control lbSetData [_index, configName _x];
 
-		private _textures = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _configName >> "textures");
+		private _textures = getArray (_textureSource >> "textures");
 		private _currentTextures = getObjectTextures _vehicle;
 		if ([_currentTextures, _textures] call F85_TextureSwap_areTexturesEqual) then {
 			_control lbSetCurSel _index;
 		};
-	} forEach _textureSources;
+	} forEach ("true" configClasses _textureSources);
 };
 
 F85_TextureSwap_areTexturesEqual = {
+	// Compares arrays of texture names (string[]). Case insensitive. Ignores leading '\'.
 	params ["_a", "_b"];
 	if (count _a != count _b) exitWith {
 		false
@@ -90,6 +91,7 @@ F85_TextureSwap_areTexturesEqual = {
 		// Case insensitive string comparison
 		if (_nA != _nB) exitWith {
 			_result = false;
+			// break loop
 		};
 	};
 	_result;
@@ -105,31 +107,30 @@ F85_TextureSwap_normalizeTextureString = {
 };
 
 F85_TextureSwap_setTextureFromControl = {
-	params ["_player", "_control", "_selectedIndex"];
+	params ["_control", "_selectedIndex"];
 
+	private _vehicle = player getVariable "F85_TextureSwap_targetVehicle";
 	private _textureName = _control lbData _selectedIndex;
-	[_player, _textureName] call F85_TextureSwap_setTexture;
+	[_vehicle, _textureName] call F85_TextureSwap_setTexture;
+
+	playSound "Click";
 };
 
 F85_TextureSwap_setTexture = {
-	params ["_player", "_textureName"];
+	params ["_vehicle", "_textureName"];
 
-	private _vehicle = vehicle _player;
 	private _textures = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "TextureSources" >> _textureName >> "textures");
-
 	{
 		_vehicle setObjectTextureGlobal [_forEachIndex, _x];
 	} forEach _textures;
-
-	playSound "Click";
-	true
 };
 
 F85_TextureSwap_generateAnimationList = {
-	params ["_player", "_control"];
+	params ["_vehicle", "_control"];
 
-	private _vehicle = vehicle _player;
-	private _animationsList = getArray (configFile >> "CfgVehicles" >> typeOf _vehicle >> "animationList");
+	private _vehicleConfig = configFile >> "CfgVehicles" >> typeOf _vehicle;
+	// TODO filter AnimationSources directly?
+	private _animationsList = getArray (_vehicleConfig >> "animationList");
 	// animationList contains animation names and their probabilities
 	private _animationNames = [];
 	{
@@ -141,27 +142,29 @@ F85_TextureSwap_generateAnimationList = {
 
 	{
 		private _animationName = _x;
-		private _displayName = getText (configFile >> "CfgVehicles" >> typeOf _vehicle >> "AnimationSources" >> _animationName >> "displayName");
+		private _displayName = getText (_vehicleConfig >> "AnimationSources" >> _animationName >> "displayName");
 		if (_displayName == "") then {
 			_displayName = _animationName;
 		};
 
+		// TODO check boxes for animations?
 		private _index = _control lbAdd _displayName;
 		_control lbSetData [_index, _animationName];
 	} forEach _animationNames;
 };
 
 F85_TextureSwap_setAnimationFromControl = {
-	params ["_player", "_control", "_selectedIndex"];
+	params ["_control", "_selectedIndex"];
 
+	private _vehicle = player getVariable "F85_TextureSwap_targetVehicle";
 	private _animationName = _control lbData _selectedIndex;
-	[_player, _animationName] call F85_TextureSwap_toggleAnimation;
+	[_vehicle, _animationName] call F85_TextureSwap_toggleAnimation;
+
+	playSound "Click";
 };
 
 F85_TextureSwap_toggleAnimation = {
-	params ["_player", "_animationName"];
-
-	private _vehicle = vehicle _player;
+	params ["_vehicle", "_animationName"];
 
 	private _currentPhase = _vehicle animationSourcePhase _animationName;
 	if (_currentPhase < 0.5) then {

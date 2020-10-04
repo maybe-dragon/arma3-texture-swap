@@ -12,7 +12,7 @@ Dead-simple vehicle texture change script
 
 ## Installation
 
-The included showcase adds a support module to trigger the functionality, but that is not necessary. You could call `[player] call F85_TextureSwap_showVehicleSubMenu` from any user interaction.
+The included showcase adds a support module to trigger the functionality, but that is not necessary. You could call `F85_TextureSwap_showVehicleMenu` from any user interaction.
 
 However, currently the script expects the player to sit inside of the vehicle which he wants to change.
 

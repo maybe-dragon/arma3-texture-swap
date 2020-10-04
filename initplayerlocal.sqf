@@ -1,10 +1,15 @@
 
 params ["_unit","_JIP"];
 
-// Only add this comm menu, or...
+// If you use this as the only support, you can call the setup function directly:
 _unit spawn F85_TextureSwap_addCommunicationMenu;
 
-// The communication menu is added after a small delay. If you want to add multiple comm menus in
-// a specific order, use the safeAdd function instead.
-// For example: This script in combination with GOM Aircraft Loadout:
-// [_unit, ["GOM_aircraftLoadoutMenu","F85_TextureSwap_CommunicationMenu"]] spawn F85_TextureSwap_safeAddMenus;
+// But `spawn` does not guarantee scripts to be executed in order.
+// Consider using F85_TextureSwap_safeAddMenus to setup multiple communication menus in a specific order:
+// private _menus = ["GOM_aircraftLoadoutMenu", "F85_TextureSwap_CommunicationMenu"];
+// [_unit, _menus] spawn F85_TextureSwap_safeAddMenus;
+
+// Alternatively you could use BIS_fnc_spawnOrdered to spawn the setup functions in order:
+// private _mutexName = "spawn support modules"; // Mutex can be any unique string
+// [_unit, "GOM_aircraftLoadoutMenu", _mutexName] call BIS_fnc_spawnOrdered;
+// [_unit, "F85_TextureSwap_addCommunicationMenu", _mutexName] call BIS_fnc_spawnOrdered;
