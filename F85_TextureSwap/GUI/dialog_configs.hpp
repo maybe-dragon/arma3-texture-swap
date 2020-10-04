@@ -53,7 +53,7 @@ class F85_TextureSwap_MainDialog {
 			y = 4 * GUI_GRID_H + GUI_GRID_Y;
 			w = 12 * GUI_GRID_W;
 			h = 13 * GUI_GRID_H;
-			style = LB_MULTI;
+			style = ST_MULTI + LB_MULTI;
 		};
 		////////////////////////////////////////////////////////
 		// GUI EDITOR OUTPUT END

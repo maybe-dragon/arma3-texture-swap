@@ -103,7 +103,7 @@ class RscText
 	deletable = 0;
 	fade = 0;
 	access = 0;
-	type = 0;
+	type = CT_STATIC;
 	idc = -1;
 	colorBackground[] = GUI_BCG_COLOR;
 	colorText[] = GUI_TITLETEXT_COLOR;
@@ -129,17 +129,17 @@ class RscListBox
 	deletable = 0;
 	fade = 0;
 	access = 0;
-	type = 5;
+	type = CT_LISTBOX;
 	rowHeight = 0;
 	colorText[] = { 1, 1, 1, 1 };
 	colorDisabled[] = { 1, 1, 1, 0.25 };
 	colorScrollbar[] = { 1, 0, 0, 0 };
 	colorSelect[] = { 0, 0, 0, 1 };
 	colorSelect2[] = { 0, 0, 0, 1 };
-	colorSelectBackground[] = { 0.95, 0.95, 0.95, 1 };
-	colorSelectBackground2[] = { 1, 1, 1, 0.5 };
+	colorSelectBackground[] = { 1, 1, 1, 1 };
+	colorSelectBackground2[] = { 1, 1, 1, 1 };
 	colorBackground[] = { 0, 0, 0, 0.3 };
-	soundSelect[] = 
+	soundSelect[] =
 	{
 		"\A3\ui_f\data\sound\RscListbox\soundSelect",
 		0.09,
@@ -148,8 +148,8 @@ class RscListBox
 	autoScrollSpeed = -1;
 	autoScrollDelay = 5;
 	autoScrollRewind = 0;
-	arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
-	arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
+	// arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
+	// arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
 	colorPicture[] = { 1, 1, 1, 1 };
 	colorPictureSelected[] = { 1, 1, 1, 1 };
 	colorPictureDisabled[] = { 1, 1, 1, 0.25 };
@@ -164,25 +164,31 @@ class RscListBox
 	tooltipColorShade[] = { 0, 0, 0, 0.65 };
 	class ListScrollBar
 	{
-		color[] = { 1, 1, 1, 1 };
-		autoScrollEnabled = 1;
+		// color[] = {0.5,1,0.5,1};
+		// colorActive[] = {1,1,1,1};
+		// colorDisabled[] = {1,1,1,0.3};
+		// thumb = "#(argb,8,8,3)color(1,1,1,1)";
+		// arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
+		// arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
+		// border = "#(argb,8,8,3)color(1,1,1,1)";
+		shadow = 0;
 	};
 	x = 0;
 	y = 0;
 	w = 0.3;
 	h = 0.3;
-	style = 16;
+	style = ST_MULTI;
 	font = "RobotoCondensed";
 	sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	shadow = 0;
 	colorShadow[] = { 0, 0, 0, 0.5 };
-	period = 1.2;
+	period = 0;
 	maxHistoryDelay = 1;
 };
 
 class RscFrame
 {
-	type = 0;
+	type = CT_STATIC;
 	idc = -1;
 	deletable = 0;
 	style = 64;
@@ -200,7 +206,7 @@ class RscFrame
 
 class IGUIBack
 {
-	type = 0;
+	type = CT_STATIC;
 	idc = 124;
 	style = 128;
 	text = "";
@@ -212,7 +218,7 @@ class IGUIBack
 	y = 0.1;
 	w = 0.1;
 	h = 0.1;
-	colorbackground[] = 
+	colorbackground[] =
 	{
 		"(profilenamespace getvariable ['IGUI_BCG_RGB_R',0])",
 		"(profilenamespace getvariable ['IGUI_BCG_RGB_G',1])",
