@@ -20,7 +20,7 @@ class F85_TextureSwap_MainDialog {
 		////////////////////////////////////////////////////////
 		// GUI EDITOR OUTPUT START (by Fafnir, v1.063, #Dyryvo)
 		////////////////////////////////////////////////////////
-		class F85_TextureSwap_Label_Texture: RscText
+		class F85_TextureSwap_Label_Texture: F85_TextureSwap_RscText
 		{
 			idc = -1;
 			text = "Select Texture"; //--- ToDo: Localize;
@@ -29,7 +29,7 @@ class F85_TextureSwap_MainDialog {
 			w = 12 * GUI_GRID_W;
 			h = 1 * GUI_GRID_H;
 		};
-		class F85_TextureSwap_ListBox_Texture: RscListbox
+		class F85_TextureSwap_ListBox_Texture: F85_TextureSwap_RscListbox
 		{
 			idc = IDC_F85_TEXTURESWAP_RSCLISTBOX_TEXTURES;
 			x = 6 * GUI_GRID_W + GUI_GRID_X;
@@ -37,7 +37,7 @@ class F85_TextureSwap_MainDialog {
 			w = 12 * GUI_GRID_W;
 			h = 13 * GUI_GRID_H;
 		};
-		class F85_TextureSwap_Label_Animation: RscText
+		class F85_TextureSwap_Label_Animation: F85_TextureSwap_RscText
 		{
 			idc = -1;
 			text = "Toggle Extras"; //--- ToDo: Localize;
@@ -46,7 +46,7 @@ class F85_TextureSwap_MainDialog {
 			w = 12 * GUI_GRID_W;
 			h = 1 * GUI_GRID_H;
 		};
-		class F85_TextureSwap_ListBox_Animation: RscListbox
+		class F85_TextureSwap_ListBox_Animation: F85_TextureSwap_RscListbox
 		{
 			idc = IDC_F85_TEXTURESWAP_RSCLISTBOX_ANIMATIONS;
 			x = 22 * GUI_GRID_W + GUI_GRID_X;

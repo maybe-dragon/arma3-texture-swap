@@ -98,7 +98,7 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
-class RscText
+class F85_TextureSwap_RscText
 {
 	deletable = 0;
 	fade = 0;
@@ -124,7 +124,7 @@ class RscText
 	tooltipColorShade[] = { 0, 0, 0, 0.65 };
 };
 
-class RscListBox
+class F85_TextureSwap_RscListBox
 {
 	deletable = 0;
 	fade = 0;
@@ -186,7 +186,7 @@ class RscListBox
 	maxHistoryDelay = 1;
 };
 
-class RscFrame
+class F85_TextureSwap_RscFrame
 {
 	type = CT_STATIC;
 	idc = -1;
@@ -204,7 +204,7 @@ class RscFrame
 	h = 0.3;
 };
 
-class IGUIBack
+class F85_TextureSwap_IGUIBack
 {
 	type = CT_STATIC;
 	idc = 124;
@@ -227,7 +227,7 @@ class IGUIBack
 	};
 };
 
-class RscControlsGroup
+class F85_TextureSwap_RscControlsGroup
 {
 	deletable = 0;
 	fade = 0;
